@@ -1,0 +1,463 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>R:Link | 소기업 연구비 규정 판정 AI</title>
+<meta name="description" content="계획서를 올리면 비목별 예산표가 짜이고, 지출 질문에는 근거 조항과 함께 가능·조건부·불가로 답합니다. 정부 R&amp;D를 수행하는 10인 이하 기업을 위한 연구비 AI.">
+<meta property="og:title" content="R:Link | 소기업 연구비 규정 판정 AI">
+<meta property="og:description" content="연구비, 이거 써도 돼? 근거 조항과 함께 답하는 소기업 연구비 AI.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='10' fill='%231D3FBB'/%3E%3Ctext x='32' y='45' font-family='serif' font-weight='900' font-size='40' text-anchor='middle' fill='white'%3ER%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&family=Noto+Serif+KR:wght@600;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #F4F6FA;
+  --paper: #FFFFFF;
+  --ink: #131B2E;
+  --sub: #36415A;
+  --muted: #4A556B;
+  --line: #CFD6E3;
+  --accent: #1D3FBB;
+  --accent-hover: #122A85;
+  --btn: #1D3FBB;
+  --btn-ink: #FFFFFF;
+  --seal: #BF2D26;
+  --band-bg: #131B2E;
+  --band-ink: #FFFFFF;
+  --band-sub: #C5CDDD;
+  --band-line: #47526B;
+  --serif: 'Noto Serif KR', 'Nanum Myeongjo', serif;
+  --sans: 'IBM Plex Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+    --bg: #0F1524;
+    --paper: #182036;
+    --ink: #EEF1F7;
+    --sub: #C0C8D9;
+    --muted: #A9B3C8;
+    --line: #2E3954;
+    --accent: #9DB1FF;
+    --accent-hover: #C2CEFF;
+    --btn: #3454D6;
+    --btn-ink: #FFFFFF;
+    --seal: #FF8379;
+    --band-bg: #1D2742;
+    --band-ink: #FFFFFF;
+    --band-sub: #C5CDDD;
+    --band-line: #47526B;
+  }
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 17px;
+  line-height: 1.7;
+  word-break: keep-all;
+  -webkit-font-smoothing: antialiased;
+}
+h1, h2, h3, p { margin: 0; }
+a { color: var(--accent); }
+a:hover { color: var(--accent-hover); }
+a:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+
+.wrap { max-width: 1120px; margin: 0 auto; padding-left: 24px; padding-right: 24px; }
+.sub { color: var(--sub); }
+.h2 {
+  font-family: var(--serif);
+  font-weight: 900;
+  font-size: clamp(30px, 4.4vw, 44px);
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+}
+.lead { display: flex; flex-direction: column; gap: 12px; }
+.lead p { max-width: 38em; color: var(--sub); }
+
+.site-header { border-bottom: 1px solid var(--line); }
+.site-header .wrap {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
+  gap: 12px 32px; padding-top: 14px; padding-bottom: 14px;
+}
+.brand {
+  font-family: var(--serif); font-weight: 900; font-size: 24px;
+  color: var(--ink); text-decoration: none;
+  min-height: 44px; display: flex; align-items: center;
+}
+.brand:hover { color: var(--ink); }
+.nav { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 28px; }
+.nav a:not(.btn) {
+  color: var(--ink); text-decoration: none; font-weight: 500; font-size: 16px;
+  min-height: 44px; display: flex; align-items: center;
+}
+.nav a:not(.btn):hover { color: var(--accent); }
+
+.btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-height: 52px; padding: 0 28px; border-radius: 4px;
+  font-weight: 600; text-decoration: none;
+  background: var(--btn); color: var(--btn-ink); border: 1px solid var(--btn);
+}
+.btn:hover { background: var(--accent-hover); border-color: var(--accent-hover); color: var(--btn-ink); }
+@media (prefers-color-scheme: dark) {
+  .btn:hover { background: #4666E8; border-color: #4666E8; }
+}
+.btn.compact { min-height: 44px; padding: 0 20px; font-size: 16px; }
+.btn.ghost { background: transparent; color: var(--ink); border-color: var(--ink); }
+.btn.ghost:hover { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+
+.hero {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 48px 64px;
+  padding-top: 72px; padding-bottom: 88px;
+}
+.hero-copy { flex: 1 1 440px; min-width: 0; display: flex; flex-direction: column; gap: 24px; }
+.kicker { font-weight: 600; color: var(--accent); }
+.hero h1 {
+  font-family: var(--serif); font-weight: 900;
+  font-size: clamp(46px, 8vw, 92px); line-height: 1.12; letter-spacing: -0.02em;
+}
+.hero-copy .sub { font-size: 19px; line-height: 1.75; max-width: 30em; }
+.actions { display: flex; flex-wrap: wrap; gap: 12px; }
+
+.slip {
+  flex: 1 1 380px; min-width: 0;
+  background: var(--paper); border: 1px solid var(--ink); border-radius: 2px;
+  padding: 28px; display: flex; flex-direction: column; gap: 22px;
+}
+.slip-head {
+  display: flex; justify-content: space-between; align-items: baseline; gap: 16px;
+  border-bottom: 1px solid var(--line); padding-bottom: 14px;
+}
+.slip-head strong { font-size: 16px; }
+.small { font-size: 14px; color: var(--muted); }
+.slip-q { font-family: var(--serif); font-weight: 600; font-size: 28px; line-height: 1.35; margin-top: 6px; }
+.slip-verdict { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
+.stamp {
+  display: inline-block; border: 3px solid var(--seal); color: var(--seal);
+  font-family: var(--serif); font-weight: 900; font-size: 26px;
+  padding: 6px 18px; border-radius: 6px; transform: rotate(-4deg); letter-spacing: 0.04em;
+}
+.slip dl { margin: 0; border-top: 1px solid var(--line); }
+.slip dl > div { display: flex; gap: 16px; padding: 12px 0; border-bottom: 1px solid var(--line); font-size: 15px; }
+.slip dt { flex: 0 0 84px; font-weight: 600; }
+.slip dd { margin: 0; color: var(--sub); }
+.chips { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.chips .small { margin-right: 4px; }
+.chip { font-size: 14px; font-weight: 600; padding: 2px 12px; border-radius: 3px; border: 1px solid transparent; }
+.chip.ok { background: var(--btn); color: var(--btn-ink); border-color: var(--btn); }
+.chip.cond { background: var(--paper); color: var(--seal); border-color: var(--seal); }
+.chip.no { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+
+.band-paper { background: var(--paper); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.band-dark { background: var(--band-bg); color: var(--band-ink); }
+.section { padding-top: 88px; padding-bottom: 88px; }
+
+.split { display: flex; flex-wrap: wrap; gap: 32px 64px; }
+.split > .h2 { flex: 1 1 320px; min-width: 0; }
+.split-body { flex: 1 1 440px; min-width: 0; display: flex; flex-direction: column; gap: 18px; }
+
+.stack { display: flex; flex-direction: column; gap: 44px; }
+
+.features { display: flex; flex-wrap: wrap; gap: 40px 48px; }
+.feature {
+  flex: 1 1 280px; min-width: 0; border-top: 3px solid var(--ink); padding-top: 20px;
+  display: flex; flex-direction: column; gap: 10px;
+}
+.tag { font-weight: 700; font-size: 15px; color: var(--accent); }
+.feature h3 { font-size: 23px; font-weight: 700; line-height: 1.4; }
+.later {
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: 10px 20px;
+  border-top: 1px solid var(--line); padding-top: 20px; font-size: 15px;
+}
+.later strong { font-weight: 600; }
+.later span { color: var(--muted); }
+
+.principles { flex: 1 1 440px; min-width: 0; margin: 0; border-bottom: 1px solid var(--band-line); }
+.principles > div { display: flex; flex-wrap: wrap; gap: 6px 24px; padding: 18px 0; border-top: 1px solid var(--band-line); }
+.principles dt { flex: 0 0 150px; font-weight: 700; }
+.principles dd { flex: 1 1 260px; min-width: 0; margin: 0; color: var(--band-sub); }
+.band-dark .split-body { flex: 1 1 360px; }
+.band-dark .split-body p { color: var(--band-sub); }
+
+.hypotheses { list-style: none; margin: 0; padding: 0; border-top: 3px solid var(--ink); }
+.hypotheses li {
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 32px;
+  padding: 24px 0; border-bottom: 1px solid var(--line);
+}
+.hypotheses .tag { flex: 0 0 40px; font-size: 17px; }
+.hypotheses .claim { flex: 999 1 380px; min-width: 0; font-size: 19px; font-weight: 500; }
+.hypotheses .target { flex: 1 1 220px; min-width: 0; color: var(--sub); }
+
+.gantt-scroll { overflow-x: auto; }
+.gantt { min-width: 820px; }
+.gantt-row {
+  display: grid; grid-template-columns: 150px repeat(11, minmax(0, 1fr));
+  align-items: center; padding: 12px 0; border-bottom: 1px solid var(--line);
+}
+.gantt-row.head { border-bottom: 2px solid var(--ink); padding: 0 0 8px; }
+.gantt-row.head span { font-size: 14px; font-weight: 600; text-align: center; }
+.gantt-row.head span:first-child { font-weight: 400; color: var(--muted); text-align: left; }
+.gantt-row .label { grid-column: 1 / 2; font-size: 15px; font-weight: 600; }
+.gantt-row .mark { font-size: 13px; font-weight: 600; color: var(--seal); text-align: center; line-height: 1.35; }
+.gantt-row .bar { height: 22px; background: var(--btn); border-radius: 2px; margin: 0 2px; }
+
+.facts { display: flex; flex-wrap: wrap; gap: 32px 48px; padding-top: 12px; }
+.facts > div { flex: 1 1 280px; min-width: 0; display: flex; flex-direction: column; gap: 8px; }
+.facts h3, .steps-title { font-size: 19px; font-weight: 700; }
+
+.apply { display: flex; flex-wrap: wrap; gap: 40px 64px; padding-top: 96px; padding-bottom: 96px; }
+.apply > div { flex: 1 1 400px; min-width: 0; }
+.apply-copy { display: flex; flex-direction: column; gap: 20px; align-items: flex-start; }
+.apply-copy .h2 { font-size: clamp(34px, 5.4vw, 56px); line-height: 1.25; }
+.apply-copy p { max-width: 32em; }
+.steps { list-style: none; margin: 12px 0 0; padding: 0; border-bottom: 1px solid var(--line); counter-reset: step; }
+.steps li {
+  counter-increment: step; display: flex; gap: 20px; padding: 18px 0;
+  border-top: 1px solid var(--line); color: var(--sub);
+}
+.steps li::before {
+  content: counter(step); flex: 0 0 28px;
+  font-family: var(--serif); font-weight: 900; font-size: 22px; line-height: 1.3; color: var(--accent);
+}
+
+.site-footer { border-top: 1px solid var(--line); }
+.site-footer .wrap {
+  display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 32px;
+  padding-top: 28px; padding-bottom: 40px; font-size: 14px; color: var(--muted);
+}
+
+@media (max-width: 560px) {
+  .section { padding-top: 64px; padding-bottom: 64px; }
+  .hero { padding-top: 48px; padding-bottom: 64px; }
+  .slip { padding: 22px; }
+  .actions .btn { width: 100%; }
+}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="#top">R:Link</a>
+    <nav class="nav" aria-label="주요 메뉴">
+      <a href="#features">기능</a>
+      <a href="#proof">검증 계획</a>
+      <a href="#schedule">일정</a>
+      <a class="btn compact" href="#apply">테스트 기업 신청</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+  <section class="wrap hero">
+    <div class="hero-copy">
+      <p class="kicker">소기업 연구비 규정 판정 AI</p>
+      <h1>연구비,<br>이거 써도 돼?</h1>
+      <p class="sub">계획서를 올리면 비목별 예산표가 짜이고, 지출 질문에는 근거 조항과 함께 가능·조건부·불가로 답합니다. 정부 R&amp;D를 수행하는 10인 이하 기업이 규정 판단을 스스로 할 수 있게 돕습니다.</p>
+      <div class="actions">
+        <a class="btn" href="#apply">테스트 기업으로 참여하기</a>
+        <a class="btn ghost" href="#features">기능 살펴보기</a>
+      </div>
+    </div>
+
+    <div class="slip" aria-label="지출 판정서 예시 화면">
+      <div class="slip-head">
+        <strong>지출 판정서</strong>
+        <span class="small">예시 화면</span>
+      </div>
+      <div>
+        <span class="small">질문</span>
+        <p class="slip-q">“노트북 사도 되나요?”</p>
+      </div>
+      <div class="slip-verdict">
+        <span class="small">판정</span>
+        <span class="stamp">조건부 가능</span>
+      </div>
+      <dl>
+        <div><dt>근거 조항</dt><dd>판정마다 해당 규정 조항을 함께 표시</dd></div>
+        <div><dt>필요 서류</dt><dd>집행 전에 챙길 서류 안내</dd></div>
+        <div><dt>기한</dt><dd>절차별 처리 기한 안내</dd></div>
+      </dl>
+      <div class="chips">
+        <span class="small">판정은 세 가지</span>
+        <span class="chip ok">가능</span>
+        <span class="chip cond">조건부</span>
+        <span class="chip no">불가</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="band-paper">
+    <div class="wrap section split">
+      <h2 class="h2">규정을 읽을 시간도, 물어볼 사람도 없는 회사를 위해</h2>
+      <div class="split-body">
+        <p class="sub">소기업은 혁신법과 연구개발비 사용기준을 직접 해석할 인력이 없어, 연구비 행정을 전문기관 문의나 컨설팅에 맡기곤 합니다. 지출 한 건을 결정하려고 답을 기다리고, 그때마다 비용이 듭니다.</p>
+        <p class="sub">R:Link는 규정을 조항 단위 DB로 정리해 두고, 계획서와 질문을 그 규정에 대어 판정합니다. 답에는 항상 근거 조항이 붙으므로 담당자가 직접 확인하고 결정할 수 있습니다.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="features" class="wrap section stack">
+    <div class="lead">
+      <h2 class="h2">과제 하나를 웹 대시보드 하나로</h2>
+      <p>첫 버전은 세 가지 기능에 집중합니다.</p>
+    </div>
+    <div class="features">
+      <article class="feature">
+        <span class="tag">F1</span>
+        <h3>계획서에서 예산표까지</h3>
+        <p class="sub">계획서를 올리면 비목별 예산을 자동으로 편성하고, 계상기준에 맞는지 검증해 어긋난 항목을 경고합니다.</p>
+      </article>
+      <article class="feature">
+        <span class="tag">F2</span>
+        <h3>물으면 판정과 근거</h3>
+        <p class="sub">규정·절차를 질문하면 지출 가능 여부와 필요한 서류, 기한을 근거 조항과 함께 안내합니다.</p>
+      </article>
+      <article class="feature">
+        <span class="tag">F3</span>
+        <h3>잔액과 할 일 한눈에</h3>
+        <p class="sub">비목별 잔액과 처리해야 할 일을 ERP형 대시보드에서 확인합니다.</p>
+      </article>
+    </div>
+    <p class="later">
+      <strong>이후 버전에서</strong>
+      <span>보고서 자동 작성, 성과·사후관리, 판정 피드백 학습, 기존 ERP 연동, 타 부처 사업</span>
+    </p>
+  </section>
+
+  <section class="band-dark">
+    <div class="wrap section split">
+      <div class="split-body">
+        <h2 class="h2">모르면 모른다고 답합니다</h2>
+        <p>규정 해석이 틀리면 피해는 기업이 집니다. 그래서 R:Link는 답보다 근거를 먼저 보여 주도록 만듭니다.</p>
+      </div>
+      <dl class="principles">
+        <div><dt>근거 조항 필수</dt><dd>모든 판정에 해당 조항을 표시합니다.</dd></div>
+        <div><dt>불확실할 때</dt><dd>단정하지 않고 “전문기관 확인”을 안내합니다.</dd></div>
+        <div><dt>적용 범위</dt><dd>중기부 R&amp;D 1개 사업의 규정을 기준으로 DB를 구축합니다.</dd></div>
+        <div><dt>전문가 검수</dt><dd>연구비 정산 실무자가 판정을 검수합니다. 판정 사례 30건 중 24건 이상이 전문가 판단과 일치해야 완성으로 봅니다.</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <section id="proof" class="wrap section stack">
+    <div class="lead">
+      <h2 class="h2">세 가지를 확인합니다</h2>
+      <p>테스트 기업 5곳과 함께, 아래 가설이 맞는지 숫자로 확인합니다.</p>
+    </div>
+    <ul class="hypotheses">
+      <li>
+        <span class="tag">H1</span>
+        <span class="claim">소기업은 규정·절차를 이해할 시간과 인력이 없어 행정을 외부에 의존한다</span>
+        <span class="target">5곳 중 4곳 이상이 외부 의존</span>
+      </li>
+      <li>
+        <span class="tag">H2</span>
+        <span class="claim">AI는 규정 근거로 지출·절차·서류 질문에 전문가와 같은 답을 낸다</span>
+        <span class="target">사례 30건, 일치율 80% 이상</span>
+      </li>
+      <li>
+        <span class="tag">H3</span>
+        <span class="claim">판정·편성 기능이 있으면 컨설팅 대신 월 구독(5~10만 원)을 택한다</span>
+        <span class="target">5곳 중 2곳 이상이 유료 의향</span>
+      </li>
+    </ul>
+  </section>
+
+  <section id="schedule" class="band-paper">
+    <div class="wrap section stack">
+      <div class="lead">
+        <h2 class="h2">12월 24일까지 만들고, 1월에 보여 드립니다</h2>
+        <p>2026 Lab-Venture Launchpad 일정에 맞춰 진행합니다. 사전승인·납품·검수를 포함해 12월 말 이내에 제작을 마칩니다.</p>
+      </div>
+
+      <div class="gantt-scroll" tabindex="0" role="group" aria-label="주차별 일정표">
+        <div class="gantt">
+          <div class="gantt-row head">
+            <span>월/주차</span>
+            <span>11/2</span><span>11/3</span><span>11/4</span>
+            <span>12/1</span><span>12/2</span><span>12/3</span><span>12/4</span>
+            <span>1/1</span><span>1/2</span><span>1/3</span><span>1/4</span>
+          </div>
+          <div class="gantt-row">
+            <span class="label">고정 일정</span>
+            <span class="mark" style="grid-column: 2 / 3">교육<br>11.14</span>
+            <span class="mark" style="grid-column: 3 / 4">계획서<br>제출</span>
+            <span class="mark" style="grid-column: 8 / 9">제작<br>완료</span>
+            <span class="mark" style="grid-column: 10 / 11">결과<br>보고</span>
+            <span class="mark" style="grid-column: 12 / 13">데모<br>데이</span>
+          </div>
+          <div class="gantt-row">
+            <span class="label">견적·사전승인</span>
+            <span class="bar" role="img" aria-label="11월 3주부터 11월 4주까지" style="grid-column: 3 / 5"></span>
+          </div>
+          <div class="gantt-row">
+            <span class="label">제작</span>
+            <span class="bar" role="img" aria-label="11월 4주부터 12월 4주까지" style="grid-column: 4 / 9"></span>
+          </div>
+          <div class="gantt-row">
+            <span class="label">고객 테스트</span>
+            <span class="bar" role="img" aria-label="12월 4주부터 1월 1주까지" style="grid-column: 8 / 10"></span>
+          </div>
+          <div class="gantt-row">
+            <span class="label">보고서·발표 준비</span>
+            <span class="bar" role="img" aria-label="1월 2주부터 1월 4주까지" style="grid-column: 10 / 13"></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="facts">
+        <div>
+          <h3>만드는 사람</h3>
+          <p class="sub">LinkLab (1인). 기획·규정 DB·AI는 김윤호(석사, 주 15시간)가 직접 만들고, 판정 검수는 연구비 정산 실무자 1명이, 웹 UI는 외주로 진행합니다.</p>
+        </div>
+        <div>
+          <h3>지금 어디까지</h3>
+          <p class="sub">혁신법과 연구개발비 사용기준을 분석하고 있으며, 소기업 애로 인터뷰를 마친 뒤 규정 DB를 설계합니다.</p>
+        </div>
+        <div>
+          <h3>예산</h3>
+          <p class="sub">외주용역비 200만 원(부가세 포함). 예산 편성·판정·대시보드 웹 UI 구현에 씁니다. 외주가 늦어지면 Streamlit으로 시연합니다.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="apply" class="wrap apply">
+    <div class="apply-copy">
+      <h2 class="h2">테스트 기업 5곳을 찾습니다</h2>
+      <p class="sub">정부 R&amp;D를 수행 중이거나 준비 중인 10인 이하 기업의 대표·실무 담당자라면 참여할 수 있습니다.</p>
+      <!-- TODO: 아래 href와 문구를 실제 신청 이메일(mailto:) 또는 폼 링크로 바꾸세요 -->
+      <a class="btn" href="mailto:YOUR_EMAIL@example.com?subject=R:Link%20테스트%20기업%20신청">[신청 이메일 또는 폼 링크]</a>
+    </div>
+    <div>
+      <h3 class="steps-title">참여하면 이렇게 써 봅니다</h3>
+      <ol class="steps">
+        <li>자사 계획서를 올려 비목별 예산표를 만듭니다.</li>
+        <li>최근 고민했던 지출 건을 물어 판정과 근거 조항을 받습니다.</li>
+        <li>전문기관 문의·컨설팅 같은 기존 방식과 비교해 의견을 줍니다.</li>
+      </ol>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <span>R:Link 소기업 연구비 AI, LinkLab</span>
+    <span>2026 Lab-Venture Launchpad MVP 프로젝트</span>
+  </div>
+</footer>
+
+</body>
+</html>
